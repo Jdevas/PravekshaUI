@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;def</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{87addde0-580b-41d6-8793-b3f66ad7562d}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{caf18e16-5c21-4c20-b7f8-38fac88af84c}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Source Files\Callibrator">
+      <UniqueIdentifier>{a49010a8-c299-4ce2-b1ee-2de5f688aa50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PravekshaMain">
+      <UniqueIdentifier>{7471a8bc-6bd0-4cf5-b3f4-6da4221b5e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common">
+      <UniqueIdentifier>{fdeb7f40-8cc2-4f8e-947e-fa3a3ae0d1bc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pravekshaui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_pravekshaui.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_pravekshaui.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_pravekshaui.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Callibrator.cpp">
+      <Filter>Source Files\Callibrator</Filter>
+    </ClCompile>
+    <ClCompile Include="PravekshaHandler.cpp">
+      <Filter>Source Files\PravekshaMain</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedDetector.cpp">
+      <Filter>Source Files\PravekshaMain</Filter>
+    </ClCompile>
+    <ClCompile Include="VehicleIdentifier.cpp">
+      <Filter>Source Files\PravekshaMain</Filter>
+    </ClCompile>
+    <ClCompile Include="VehicleTrackerClass.cpp">
+      <Filter>Source Files\PravekshaMain</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Source Files\PravekshaMain</Filter>
+    </ClCompile>
+    <ClCompile Include="RuleHandler.cpp">
+      <Filter>Source Files\PravekshaMain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Dropbox\FYP\Temp\WhiteLineDetector.cpp">
+      <Filter>Source Files\Callibrator</Filter>
+    </ClCompile>
+    <ClCompile Include="DatabaseHandler.cpp">
+      <Filter>Source Files\PravekshaMain</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Praveksha.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Praveksha.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="WrongLaneDetector.cpp">
+      <Filter>Source Files\PravekshaMain</Filter>
+    </ClCompile>
+    <ClCompile Include="Mapper.cpp">
+      <Filter>Source Files\PravekshaMain</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="pravekshaui.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="pravekshaui.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="pravekshaui.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Praveksha.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GeneratedFiles\ui_pravekshaui.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
