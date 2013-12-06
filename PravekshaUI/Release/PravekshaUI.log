@@ -1,75 +1,20 @@
-﻿Build started 30/11/2013 11:44:00 AM.
-     1>Project "C:\Users\Jayamal De Vas\Documents\Visual Studio 2010\Projects\PravekshaUI\PravekshaUI\PravekshaUI.vcxproj" on node 2 (build target(s)).
+﻿Build started 12/6/2013 4:36:21 PM.
+     1>Project "E:\OpenCV\testapp\Projects\PravekshaUI\PravekshaUI\PravekshaUI.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Release\PravekshaUI.unsuccessfulbuild" because "AlwaysCreate" was specified.
        CustomBuild:
-         Moc'ing pravekshaui.h...
-         Uic'ing pravekshaui.ui...
-     1>C:\Users\Jayamal De Vas\Documents\Visual Studio 2010\Projects\PravekshaUI\PravekshaUI\pravekshaui.ui : warning : The name 'layoutWidget' (QWidget) is already in use, defaulting to 'layoutWidget1'.
-         Moc'ing Praveksha.h...
-         Rcc'ing pravekshaui.qrc...
-     1>RCC : warning : No resources in 'C:\Users\Jayamal De Vas\Documents\Visual Studio 2010\Projects\PravekshaUI\PravekshaUI\pravekshaui.qrc'.
-         
+         All outputs are up-to-date.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\4.8.2\include /I.\GeneratedFiles\Release /IC:\Qt\4.8.2\include\QtCore /IC:\Qt\4.8.2\include\QtGui /IC:\Qt\4.8.2\include\QtSql /IF:\UoM\Campus\L4\FYP\Source\opencv\include /IF:\UoM\Campus\L4\FYP\Source\SQlite /nologo /W1 /WX- /O2 /Oy- /D UNICODE /D WIN32 /D QT_LARGEFILE_SUPPORT /D QT_DLL /D QT_NO_DEBUG /D NDEBUG /D QT_CORE_LIB /D QT_GUI_LIB /D QT_SQL_LIB /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\..\..\..\Dropbox\FYP\Temp\WhiteLineDetector.cpp Callibrator.cpp DatabaseHandler.cpp GeneratedFiles\Release\moc_Praveksha.cpp GeneratedFiles\Release\moc_pravekshaui.cpp Logger.cpp main.cpp Mapper.cpp PravekshaHandler.cpp pravekshaui.cpp RuleHandler.cpp SpeedDetector.cpp VehicleIdentifier.cpp VehicleTrackerClass.cpp WrongLaneDetector.cpp
-         WhiteLineDetector.cpp
-     1>c:\users\jayamal de vas\dropbox\fyp\temp\Praveksha.h(49): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         Callibrator.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         DatabaseHandler.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         moc_Praveksha.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\generatedfiles\release\../../Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         moc_pravekshaui.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         Logger.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         main.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         Mapper.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         PravekshaHandler.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         pravekshaui.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         RuleHandler.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         SpeedDetector.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         VehicleIdentifier.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         VehicleTrackerClass.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         WrongLaneDetector.cpp
-     1>c:\users\jayamal de vas\documents\visual studio 2010\projects\pravekshaui\pravekshaui\Praveksha.h(57): warning C4091: 'static ' : ignored on left of 'VariableStorage' when no variable is declared
-         Generating Code...
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\4.8.2\include /I.\GeneratedFiles\Release /IC:\Qt\4.8.2\include\QtCore /IC:\Qt\4.8.2\include\QtGui /IC:\Qt\4.8.2\include\QtSql /IF:\UoM\Campus\L4\FYP\Source\opencv\include /IF:\UoM\Campus\L4\FYP\Source\SQlite /nologo /W1 /WX- /O2 /Oy- /D UNICODE /D WIN32 /D QT_LARGEFILE_SUPPORT /D QT_DLL /D QT_NO_DEBUG /D NDEBUG /D QT_CORE_LIB /D QT_GUI_LIB /D QT_SQL_LIB /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt GeneratedFiles\qrc_pravekshaui.cpp
-         qrc_pravekshaui.cpp
+         All outputs are up-to-date.
+         All outputs are up-to-date.
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jayamal De Vas\Documents\Visual Studio 2010\Projects\PravekshaUI\Win32\Release\\PravekshaUI.exe" /NOLOGO /LIBPATH:C:\Qt\4.8.2\lib /LIBPATH:D:\opencv\lib\Release /LIBPATH:F:\UoM\Campus\L4\FYP\Source\SQlite qtmain.lib QtCore4.lib QtGui4.lib QtSql4.lib opencv_calib3d243.lib opencv_contrib243.lib opencv_core243.lib opencv_features2d243.lib opencv_flann243.lib opencv_gpu243.lib opencv_haartraining_engine.lib opencv_highgui243.lib opencv_imgproc243.lib opencv_legacy243.lib opencv_ml243.lib opencv_nonfree243.lib opencv_objdetect243.lib opencv_photo243.lib opencv_stitching243.lib opencv_ts243.lib opencv_video243.lib opencv_videostab243.lib sqlite3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\PravekshaUI.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /PDB:"C:\Users\Jayamal De Vas\Documents\Visual Studio 2010\Projects\PravekshaUI\Win32\Release\PravekshaUI.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jayamal De Vas\Documents\Visual Studio 2010\Projects\PravekshaUI\Win32\Release\PravekshaUI.lib" /MACHINE:X86 Release\WhiteLineDetector.obj
-         Release\Callibrator.obj
-         Release\DatabaseHandler.obj
-         Release\qrc_pravekshaui.obj
-         Release\moc_Praveksha.obj
-         Release\moc_pravekshaui.obj
-         Release\Logger.obj
-         Release\main.obj
-         Release\Mapper.obj
-         Release\PravekshaHandler.obj
-         Release\pravekshaui.obj
-         Release\RuleHandler.obj
-         Release\SpeedDetector.obj
-         Release\VehicleIdentifier.obj
-         Release\VehicleTrackerClass.obj
-         Release\WrongLaneDetector.obj
-         PravekshaUI.vcxproj -> C:\Users\Jayamal De Vas\Documents\Visual Studio 2010\Projects\PravekshaUI\Win32\Release\PravekshaUI.exe
-       Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\Jayamal De Vas\Documents\Visual Studio 2010\Projects\PravekshaUI\Win32\Release\\PravekshaUI.exe;#1" /manifest Release\PravekshaUI.exe.intermediate.manifest
+         All outputs are up-to-date.
+         PravekshaUI.vcxproj -> E:\OpenCV\testapp\Projects\PravekshaUI\Win32\Release\PravekshaUI.exe
        FinalizeBuildStatus:
          Deleting file "Release\PravekshaUI.unsuccessfulbuild".
          Touching "Release\PravekshaUI.lastbuildstate".
-     1>Done Building Project "C:\Users\Jayamal De Vas\Documents\Visual Studio 2010\Projects\PravekshaUI\PravekshaUI\PravekshaUI.vcxproj" (build target(s)).
+     1>Done Building Project "E:\OpenCV\testapp\Projects\PravekshaUI\PravekshaUI\PravekshaUI.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:47.52
+Time Elapsed 00:00:00.17

@@ -1,4 +1,4 @@
-#include "Praveksha.h"
+#include "PravekshaHandler.h"
 
 using namespace cv;
 using namespace std;
@@ -7,11 +7,6 @@ using namespace gpu;
 int VariableStorage::frameNo;
 int VariableStorage::rightClickFrameNo;
 int VariableStorage::delay;
-
-//void main(){
-//	PravekshaHandler pra = PravekshaHandler();
-//	pra.pravekshaHandler();
-//}
 
 void PravekshaHandler::setCalibrator(Calibrator cal)
 {
@@ -29,13 +24,12 @@ PravekshaHandler::PravekshaHandler()
 	morph_operator = 0;
 	WEIGHT = 0.1;
 
-	//WhiteLineDetector whiteLineDetector;
 	VehicleIdentifier vehicleidentifier;
 	VehicleTracker vehiTracker;
-	//Calibrator callibrator = cal;
+
 }
 
-PravekshaHandler::PravekshaHandler(SpeedDetector *spd)
+PravekshaHandler::PravekshaHandler(Logger *logger)
 {
 	VariableStorage::frameNo = 0;
 	VariableStorage::delay = 0;
@@ -48,7 +42,8 @@ PravekshaHandler::PravekshaHandler(SpeedDetector *spd)
 	//WhiteLineDetector whiteLineDetector;
 	VehicleIdentifier vehicleidentifier;
 	VehicleTracker vehiTracker;
-	sp = spd;
+	//sp = spd;
+	this->logHandler = logger;
 	//Calibrator callibrator = cal;
 }
 
@@ -82,21 +77,22 @@ void PravekshaHandler::pravekshaHandler()
 
 	cv::Mat frame; // current video frame
 	cv::Mat meanFrame;
-	cv::Mat oriMeanFrame;
 	cv::Mat inputFrame;
 	cv::Mat outFrame;
 	cv::Mat copyFrame;
+	cv::Mat oriMeanFrame;
 
-	cv::namedWindow("Extracted Frame",CV_WINDOW_FREERATIO);
+	cv::namedWindow("Background",CV_WINDOW_FREERATIO);
 	cv::namedWindow("Original",CV_WINDOW_FREERATIO);
+	cv::namedWindow("After",CV_WINDOW_FREERATIO);
 	
-	//resizeWindow("Extracted Frame",330,210);
+	resizeWindow("Background",330,210);
 	
 	int size = 335;
 	int hor = 100;
 
 	cvMoveWindow("Original", 0, 0);
-	//cvMoveWindow("Extracted Frame",0, hor);
+	cvMoveWindow("Background",0, hor);
 	
 	if (!capture.read(frame))
 		return;
@@ -107,31 +103,38 @@ void PravekshaHandler::pravekshaHandler()
 	
 	vector<vector<int>> whitePointCordiantes = callibrator.getWhitePointCordinates();
 	//ruleHandler = RuleHandler(vehicleData,frame, blobs, previousBlobs, mapper, whitePointCordiantes, sp, mappedData);
-	ruleHandler = RuleHandler(vehicleData,frame, whitePointCordiantes, sp );
-	meanFrame=frame.clone();
-	oriMeanFrame = frame.clone();
+	ruleHandler = RuleHandler(vehicleData,frame, whitePointCordiantes, logHandler );
+	
+	/*databaseHandler.initiateDB();*/
+	meanFrame=frame.clone();	
+	oriMeanFrame = meanFrame.clone();
+	
 
 	delay = 1000/rate;
 	VariableStorage::delay = delay;
 	int frameN=0;
 	while (!stop) {
-		
+		frameN++;
+
+		if(frameN==VariableStorage::rightClickFrameNo)
+			continue;
+
 		if (!capture.read(frame))
 			break;
 
-		frameN++;
+		/*if(frameN<3435)
+			continue;*/
+		if(frameN==1266)
+			int ggg=0;
 
-		if(frameN < VariableStorage::rightClickFrameNo)
-			continue;
-		
 		VariableStorage::frameNo++;
-		copyFrame = frame/3;
+		copyFrame = frame*2/3;
 		cv::cvtColor(frame,frame,CV_BGR2GRAY);
 		frame.copyTo(outFrame);
 
-		//bypass frames
-		//if(frameN > 6200){
 		
+		/*if(VariableStorage::frameNo < 200)
+			continue;*/
 		for(int row = 0; row < frame.rows; ++row) {
 			uchar* pF = frame.ptr(row);
 			uchar* pM = meanFrame.ptr(row);
@@ -142,9 +145,9 @@ void PravekshaHandler::pravekshaHandler()
 				pO[col] = 255; 
  			}
 			for(int col = roi[row][1]; col < roi[row][2]; ++col) {				              
-				pC[col*3]=pC[col*3]*3;
-				pC[col*3+1]=pC[col*3+1]*3;
-				pC[col*3+2]=pC[col*3+2]*3;
+				pC[col*3]=pC[col*3]*3/2;
+				pC[col*3+1]=pC[col*3+1]*3/2;
+				pC[col*3+2]=pC[col*3+2]*3/2;
 
 				if((pF[col]-pM[col])>BACKGROUND_SUBSTRACTION_THRESHOULD || (pM[col]-pF[col]>BACKGROUND_SUBSTRACTION_THRESHOULD)){   
 					pO[col] = 0;//pF[col];  
@@ -176,6 +179,20 @@ void PravekshaHandler::pravekshaHandler()
 		element = getStructuringElement( morph_elem, Size( 2*morph_size + 1, 2*morph_size+1 ), Point( morph_size, morph_size ) );
 		inputFrame = outFrame.clone();
 		morphologyEx( inputFrame, outFrame, operation, element );
+		cv::imshow("After",outFrame);
+
+		//for(int row = 0; row < frame.rows; ++row) {
+		//		uchar* pO = outFrame.ptr(row);
+		//		uchar *pF = frame.ptr(row);
+		//		uchar* pM = meanFrame.ptr(row);			
+		//		for(int col = roi[row][1]; col < roi[row][2]; ++col) {
+		//			if((pO[col]==255)){   
+		//				pM[col] =  (1-WEIGHT)*pM[col]+WEIGHT*pF[col];
+		//			}  	
+
+		//		}		
+		//	}
+
 
 		if(VariableStorage::frameNo==1){
 			blobs = vehicleidentifier.expandBlobMatrix(outFrame,frame,blobMatrix, callibrator.getRoI());
@@ -201,14 +218,12 @@ void PravekshaHandler::pravekshaHandler()
 			vehicleData = ruleHandler.detectRules(callibrator.getOriCorners(), callibrator.getDistances());
 			
 		}
-		
-		//} // frame bypass ends
-		
 		//resizeWindow("Original",720,480);
-		this->callibrator.drawLines(&copyFrame);
-
+		this->callibrator.drawLines(&copyFrame, 1);
 		cv::imshow("Original",copyFrame);
-		cv::imshow("Extracted Frame",outFrame);
+		cv::imshow("Background",meanFrame);
+		
+		//
 		
 		cout << VariableStorage::frameNo << endl;
 		// introduce a delay

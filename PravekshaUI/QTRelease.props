@@ -3,14 +3,14 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>F:\UoM\Campus\L4\FYP\Source\opencv\include;$(IncludePath)</IncludePath>
+    <IncludePath>E:\OpenCV\testapp\opencv\build\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>F:\UoM\Campus\L4\FYP\Source\opencv\include;F:\UoM\Campus\L4\FYP\Source\SQlite</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\OpenCV\testapp\opencv\build\include;E:\OpenCV\testapp\Projects\SQlite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>D:\opencv\lib\Release;F:\UoM\Campus\L4\FYP\Source\SQlite</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\OpenCV\testapp\opencvNew\OpenCV\lib\Release;E:\OpenCV\testapp\Projects\SQlite;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_calib3d243.lib;opencv_contrib243.lib;opencv_core243.lib;opencv_features2d243.lib;opencv_flann243.lib;opencv_gpu243.lib;opencv_haartraining_engine.lib;opencv_highgui243.lib;opencv_imgproc243.lib;opencv_legacy243.lib;opencv_ml243.lib;opencv_nonfree243.lib;opencv_objdetect243.lib;opencv_photo243.lib;opencv_stitching243.lib;opencv_ts243.lib;opencv_video243.lib;opencv_videostab243.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

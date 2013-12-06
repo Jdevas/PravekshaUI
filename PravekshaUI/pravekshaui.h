@@ -3,7 +3,10 @@
 
 #include <QtGui/QMainWindow>
 #include "ui_pravekshaui.h"
-#include "Praveksha.h"
+#include "PravekshaHandler.h"
+#include "qcustomplot.h"
+#include "DatabaseHandler.h"
+
 
 class PravekshaUI : public QMainWindow
 {
@@ -19,15 +22,22 @@ private:
 	Calibrator cal;
 	QStringList *stringList;
 	QStringListModel* listModel;
+	QCustomPlot *customPlot;
+	QCPBars *myBars; 
 
 public slots:
 		void on_btnStartCallibration_clicked();
 		void on_btnStopCallibration_clicked();
-		void on_btnBrowse_clicked();	
+		void on_btnBrowse_clicked();			
+		void on_btnSetLoggerPath_clicked();
+		void on_btnSetDistance_clicked();
 		void onListItemClicked(const QModelIndex index);
+		void on_btnStat_clicked();
 
 private slots:
-        void updateLogList(double speed);
+        void updateLogList(String violation);
+		void currentChangedSlot(int id);
+		void updateStat();
 };
 
 #endif // PRAVEKSHAUI_H

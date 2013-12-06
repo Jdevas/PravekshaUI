@@ -50,12 +50,6 @@
     <ClCompile Include="pravekshaui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_pravekshaui.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_pravekshaui.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_pravekshaui.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
@@ -80,23 +74,38 @@
     <ClCompile Include="RuleHandler.cpp">
       <Filter>Source Files\PravekshaMain</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Dropbox\FYP\Temp\WhiteLineDetector.cpp">
-      <Filter>Source Files\Callibrator</Filter>
-    </ClCompile>
     <ClCompile Include="DatabaseHandler.cpp">
       <Filter>Source Files\PravekshaMain</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_Praveksha.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_Praveksha.cpp">
-      <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="WrongLaneDetector.cpp">
       <Filter>Source Files\PravekshaMain</Filter>
     </ClCompile>
     <ClCompile Include="Mapper.cpp">
       <Filter>Source Files\PravekshaMain</Filter>
+    </ClCompile>
+    <ClCompile Include="WhiteLineDetector.cpp">
+      <Filter>Source Files\Callibrator</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_pravekshaui.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_pravekshaui.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="qcustomplot.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_qcustomplot.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_qcustomplot.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Logger.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Logger.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -112,10 +121,46 @@
     <CustomBuild Include="Praveksha.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="SpeedDetector.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qcustomplot.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Logger.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_pravekshaui.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Callibrator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DatabaseHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PravekshaHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RuleHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleIdentifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleTracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WhiteLineDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WrongLaneDetector.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

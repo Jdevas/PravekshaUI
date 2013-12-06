@@ -1,17 +1,23 @@
-# include "Praveksha.h"
+#include "WrongLaneDetector.h"
 
 
 WrongLaneDetector::WrongLaneDetector(){
 
 }
 
-WrongLaneDetector::WrongLaneDetector(vector<Point> oriCorners,vector<double> dist,vector<vector<double>> mappedData){
+WrongLaneDetector::WrongLaneDetector(vector<Point> oriCorners,vector<double> dist){
 	this->oriCorners=oriCorners;
 	this->dist = dist;
-	this->mappedData = mappedData;
+	//this->mappedData = mappedData;
 }
 
-void WrongLaneDetector::WrongLaneDetection(cv::Mat oriFrame, vector<vector<int>> &blobs, vector<vector<int>> &mapper){
+//void WrongLaneDetector::setLogger(Logger* logger)
+//{
+//	WrongLaneDetector::logHandler = logger;
+//}
+
+
+VehicleDataStruct WrongLaneDetector::WrongLaneDetection(cv::Mat oriFrame, VehicleDataStruct &vehicleData, vector<Point> oriCorners, vector<double> dist, Logger &logHandler){
 
 	int width=0.5+ sqrt(1.0*(oriCorners[3].y-oriCorners[2].y)*(oriCorners[3].y-oriCorners[2].y)+(oriCorners[3].x-oriCorners[2].x)*(oriCorners[3].x-oriCorners[2].x));
 	int height= 0.5+dist[dist.size()-1];//sqrt(1.0*(oriCorners[2].y-oriCorners[0].y)*(oriCorners[2].y-oriCorners[0].y)+(oriCorners[2].x-oriCorners[0].x)*(oriCorners[2].x-oriCorners[0].x));
@@ -28,8 +34,8 @@ void WrongLaneDetector::WrongLaneDetection(cv::Mat oriFrame, vector<vector<int>>
 	int bottomLine=2*height;
 
 	double radiousRatio;
-
-
+	int radius = 0;
+	int CIRCLE_THRESHOULD = VariableStorage::CIRCLE_THRESHOULD;
 	/*int leftRow1 = whitePointCordiantes[0][0];
 	int leftCol1 = whitePointCordiantes[0][1];
 	int leftRow2 = whitePointCordiantes[0][(whitePointCordiantes[0].size()-2)];
@@ -41,33 +47,52 @@ void WrongLaneDetector::WrongLaneDetection(cv::Mat oriFrame, vector<vector<int>>
 
 	bool isOvertake = false;
 
-	for(int i=0;i<blobs.size();i++){
+	try{
+	for(int i=0;i<vehicleData.blobs.size();i++){
+		if(vehicleData.blobs[i][3]<=CIRCLE_THRESHOULD){
+			continue;
+		}
+		if(vehicleData.blobs[i][14]==-1){
+			radius = sqrt(vehicleData.blobs[i][3] / 2.00);
+			circle( oriFrame, Point( vehicleData.blobs[i][2], vehicleData.blobs[i][1]), radius,  CV_RGB(255,0,0), 2, 8, 0 );
+			
+			continue;
+		}
+
+
 		isOvertake = false;		
-		if((blobs[i][8]==0)&&(blobs[i][5]>0)){
-			if(blobs[i][4]==1){
+		if((vehicleData.blobs[i][8]==0)&&(vehicleData.blobs[i][5]>0)){
+			if(vehicleData.blobs[i][4]==1){
 
-				if((((blobs[i][10]-rightCenterLine)<30)&&((blobs[i][10]-rightCenterLine)<0))&&(blobs[i][11]>height)){
+				if((((vehicleData.blobs[i][10]-rightCenterLine)<30))&&(vehicleData.blobs[i][11]>height)){
 
-					for(int j=0;j<blobs.size();j++){
-						if(i==j||(blobs[j][4]==-1))
+					for(int j=0;j<vehicleData.blobs.size();j++){
+						if(vehicleData.blobs[j][3]<= CIRCLE_THRESHOULD){
 							continue;
-						if(((blobs[i][11]-blobs[j][11])<height/2)&&((blobs[i][11]-blobs[j][11])>-height/2)){
+						}
+						if(i==j||(vehicleData.blobs[j][4]==-1))
+							continue;
+						if((rightCenterLine-vehicleData.blobs[j][10])>0)
+							continue;
+						if(((vehicleData.blobs[i][11]-vehicleData.blobs[j][11])<2*height/3)&&((vehicleData.blobs[i][11]-vehicleData.blobs[j][11])>-2*height/3)){
 							isOvertake = true;
-							j = blobs.size();
+							j = vehicleData.blobs.size();
 						}
 					}
-					if((!isOvertake)&&(blobs[i][11]>height/2)){
-						for(int j=0;j<mappedData.size();j++){
-							if((mappedData[i][3]==-1))
+					if((!isOvertake)&&(vehicleData.blobs[i][11]>height/2)){
+						for(int j=0;j<vehicleData.mappedData.size();j++){
+							if((vehicleData.mappedData[j][3]==-1))
 								continue;
-							if(((blobs[i][11]-mappedData[j][1])<height/2)&&((blobs[i][11]-mappedData[j][1])>-height/2)){
+							if((rightCenterLine-vehicleData.mappedData[j][0])>0)
+								continue;
+							if(((vehicleData.blobs[i][11]-vehicleData.mappedData[j][1])<2*height/3)&&((vehicleData.blobs[i][11]-vehicleData.mappedData[j][1])>-2*height/3)){
 								isOvertake = true;
 							}
 						}
 					}
 					if(!isOvertake){
-						cout<< "Wrong Down"<<endl;
-						system("Pause");
+						vehicleData.blobs[i][14]++;
+
 					}
 
 				}
@@ -78,37 +103,67 @@ void WrongLaneDetector::WrongLaneDetection(cv::Mat oriFrame, vector<vector<int>>
 				//	//cout<< "Correct" <<endl;
 				//}
 			}
-			if(blobs[i][4]==-1){
+			if(vehicleData.blobs[i][4]==-1){
 				/*cout<<"AAAAA"<<leftCenterLine<<endl;
 				cout<<"BBBBB"<<blobs[i][10]<<endl;*/
 
-				if(((leftCenterLine-blobs[i][10])<30)&&((leftCenterLine-blobs[i][10])<0)&&(blobs[i][11]<height)){
-					for(int j=0;j<blobs.size();j++){
-						if(i==j||(blobs[i][4]==1))
+				if(((leftCenterLine-vehicleData.blobs[i][10])<30)&&(vehicleData.blobs[i][11]<height)){
+					for(int j=0;j<vehicleData.blobs.size();j++){
+						if(vehicleData.blobs[j][3]<= CIRCLE_THRESHOULD){
 							continue;
-						if(((blobs[i][11]-blobs[j][11])<height/2)&&((blobs[i][11]-blobs[j][11])>-height/2)){
+						}
+						if(i==j||(vehicleData.blobs[i][4]==1))
+							continue;
+						if((leftCenterLine-vehicleData.blobs[j][10])<0)
+							continue;
+						if(((vehicleData.blobs[i][11]-vehicleData.blobs[j][11])<2*height/3)&&((vehicleData.blobs[i][11]-vehicleData.blobs[j][11])>-2*height/3)){
 							isOvertake = true;
-							j = blobs.size();
+							j = vehicleData.blobs.size();
 						}
 					}
-					if((!isOvertake)&&(blobs[i][11]<height/2)){
-						for(int j=0;j<mappedData.size();j++){
-							if((mappedData[i][3]==1))
+					if((!isOvertake)&&(vehicleData.blobs[i][11]<height/2)){
+						for(int j=0;j<vehicleData.mappedData.size();j++){
+							if((vehicleData.mappedData[j][3]==1))
 								continue;
-							if(((blobs[i][11]-mappedData[j][1])<height/2)&&((blobs[i][11]-mappedData[j][1])>-height/2)){
+							if((leftCenterLine-vehicleData.mappedData[j][0])<0)
+								continue;
+							if(((vehicleData.blobs[i][11]-vehicleData.mappedData[j][1])<2*height/3)&&((vehicleData.blobs[i][11]-vehicleData.mappedData[j][1])>-2*height/3)){
 								isOvertake = true;
 							}
 						}
 					}
 					if(!isOvertake){
-						cout<<"WWWWW "<< blobs[i][5]<<endl;
-						
-						cout<< "Wrong Up"<<endl;
-						system("Pause");
+						vehicleData.blobs[i][14]++;
+
 					}
 				}
 			}
+
+			if(vehicleData.blobs[i][14]>3){
+
+				vehicleData.blobs[i][14] = -1;
+				radius = sqrt(vehicleData.blobs[i][3] / 2.00);
+
+				circle( oriFrame, Point( vehicleData.blobs[i][2], vehicleData.blobs[i][1]), radius,  CV_RGB(255,0,0), 2, 8, 0 );
+
+				//if(vehicleData.blobs[i][7]!=0){
+					vehicleData.blobs[i][15] = logHandler.getIncrementedViolationId();
+					vehicleData.blobs[i][16] = 1;
+					vehicleData.blobs[i][7] = logHandler.writeFile("Wrong Lane",&oriFrame, vehicleData.blobs[i][15], 1, vehicleData.blobs[i][16],0);
+				/*}else{
+					vehicleData.blobs[i][15] = logHandler.getIncrementedViolationId();
+					vehicleData.blobs[i][16] = 1;
+					vehicleData.blobs[i][7] = logHandler.writeFile("Wrong Lane ",&oriFrame,0, 1, 1);
+				}*/
+				
+			}
+
 		}
 	}
+	}catch(std::exception& ex){
+		VariableStorage::frameNo;
+		int lll=0;
+		}
 
+	return vehicleData;
 }

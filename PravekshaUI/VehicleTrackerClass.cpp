@@ -1,3 +1,4 @@
+#include "VehicleTracker.h"
 #include "Praveksha.h"
 
 using namespace cv;
@@ -20,7 +21,7 @@ vector< vector<int> > VehicleTracker::vehicleTracker(vector< vector<int> > &blob
 	int x=0, y=0, pX=0, pY=0, xDist=0, yDist = 0;
 
 	for(int i=0; i<previousBlobs.size(); i++){
-		if(previousBlobs[i][3] < CIRCLE_THRESHOULD)
+		if(previousBlobs[i][3] <= CIRCLE_THRESHOULD)
 			continue;
 
 		mapper[i][0] = previousBlobs[i][0];
@@ -28,7 +29,7 @@ vector< vector<int> > VehicleTracker::vehicleTracker(vector< vector<int> > &blob
 		pY = previousBlobs[i][2];
 
 		for(int j=0; j<blobs.size(); j++){
-			if(blobs[j][3] < CIRCLE_THRESHOULD)
+			if(blobs[j][3] <= CIRCLE_THRESHOULD)
 				continue;
 			x = blobs[j][1];
 			y = blobs[j][2];

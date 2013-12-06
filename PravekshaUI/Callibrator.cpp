@@ -1,5 +1,4 @@
-#include "Praveksha.h"
-#include "pravekshaui.h"
+#include "Callibrator.h"
 
 using namespace cv;
 using namespace std;
@@ -13,6 +12,9 @@ bool Calibrator::rightClicked;
 string VariableStorage::path;
 
 int frameN;
+vector<Point> corners;
+int clicks=0;
+int color=255;
 vector<vector <int>> Calibrator::getRoI()
 {
 	return roi;
@@ -31,9 +33,42 @@ vector<double> Calibrator::getDistances(){
 	return this->dist;
 }
 
+void Calibrator::swap(Point* p1, Point* p2){
+	Point temp = *p1;
+	*p1 = *p2;
+	*p2 = temp;
+}
+
+vector<Point> Calibrator::sort(vector<Point> oriCorners){
+	
+	if(oriCorners[0].y > oriCorners[1].y){
+		swap(&oriCorners[0], &oriCorners[1]);
+	}
+	if(oriCorners[2].y > oriCorners[3].y){
+		swap(&oriCorners[2], &oriCorners[3]);
+	}
+	if(oriCorners[0].y > oriCorners[2].y){
+		swap(&oriCorners[0], &oriCorners[2]);
+	}
+	if(oriCorners[1].y > oriCorners[3].y){
+		swap(&oriCorners[1], &oriCorners[3]);
+	}
+	if(oriCorners[1].y > oriCorners[2].y){
+		swap(&oriCorners[1], &oriCorners[2]);
+	}
+	if(oriCorners[0].x > oriCorners[1].x){
+		swap(&oriCorners[0], &oriCorners[1]);
+	}
+	if(oriCorners[3].x > oriCorners[2].x){
+		swap(&oriCorners[3], &oriCorners[2]);
+	}
+
+	return oriCorners;
+}
+
 void Calibrator::setOriCorners(vector<Point> oriCorners)
 {
-	Point p11(1021,223);
+	/*Point p11(1021,223);
 	Point p21(1317,252);
 	Point p31(1184,508);
 	Point p41 (170,417);	
@@ -41,9 +76,50 @@ void Calibrator::setOriCorners(vector<Point> oriCorners)
 	oriCorners[0]=(p11);
 	oriCorners[1]=(p21);
 	oriCorners[2]=(p31);
-	oriCorners[3]=(p41);
+	oriCorners[3]=(p41);*/
+	oriCorners = sort(oriCorners);
 
-	this->oriCorners = oriCorners;
+	double x1 = oriCorners[3].x;
+	double y1 = oriCorners[3].y;
+
+	double x2 = oriCorners[2].x;
+	double y2 = oriCorners[2].y;
+	
+	double x3 = oriCorners[0].x;
+	double y3 = oriCorners[0].y;
+
+	double x4 = oriCorners[1].x;
+	double y4 = oriCorners[1].y;
+
+	double m1,m2,c1,c2;
+	int x,y;
+	m1 = (y1 - y2)/(x1 - x2);
+	if(y3>y4){
+		c1 = y4 - m1 * x4;
+		m2 = (y3 - y1)/(x3 - x1);
+		c2 = y1 - m2*x1;
+	}
+	else{
+		c1 = y3 - m1 * x3;
+		m2 = (y4 - y2)/(x4 - x2);		
+		c2 = y2 - m2 * x2;
+	}
+
+	x = (c2 - c1)/(m1 - m2);
+	y = m1 *x + c1;
+
+	Point p(x,y);
+	
+	if(y3>y4){
+		oriCorners[0]=(p);
+	}
+	else{
+		oriCorners[1]=(p);
+	}	
+	//oriCorners.push_back(Point(x,y));
+	Calibrator::oriCorners = oriCorners;
+
+	setDist();
 }
 
 vector<vector<int>> Calibrator::getWhitePointCordinates()
@@ -70,10 +146,20 @@ void Calibrator::setDist(){
 void Calibrator::mouseHandler(int event, int x, int y, int flags, void* param){
 	switch(event){
 	case CV_EVENT_LBUTTONDOWN:	
-
-		roiPoints.push_back(Point(x,y));	
-		//roiPoint++;		
-		cout << "X= " << x << " y=" << y << endl;
+		if(!rightClicked){
+			roiPoints.push_back(Point(x,y));	
+		}
+		else{
+			if(clicks<4){
+				oriCorners.push_back(Point(x,y));
+				clicks++;
+			}
+			if(clicks==4){				
+				color = 0;
+				setOriCorners(oriCorners);
+				
+			}
+		}
 
 		break;
 
@@ -149,11 +235,18 @@ void Calibrator::mouseHandler(int event, int x, int y, int flags, void* param){
 
 
 void Calibrator::drawLines(Mat *toDraw){
-	if(roiPoints.size() >1){
+	if(roiPoints.size() >0){
 		for	(int i=1;i<roiPoints.size();i++){
 			line(*toDraw,roiPoints[i-1], roiPoints[i], Scalar(255,255,255), 4, 4,0);
 		}
 	}
+}
+
+void Calibrator::drawLines(Mat *toDraw, int i){
+	line(*toDraw,oriCorners[0], oriCorners[1], Scalar(0,200,200), 4, 4,0);
+	line(*toDraw,oriCorners[1], oriCorners[2], Scalar(255,255,255), 4, 4,0);
+	line(*toDraw,oriCorners[2], oriCorners[3], Scalar(0,200,200), 4, 4,0);
+	line(*toDraw,oriCorners[3], oriCorners[0], Scalar(255,255,255), 4, 4,0);
 }
 
 void Calibrator::callibrate()
@@ -161,7 +254,8 @@ void Calibrator::callibrate()
 	WhiteLineDetector whiteLineDetect;
 	cv::VideoCapture capture(VariableStorage::path);
 	vector<Point> oriCorners(4);
-
+	clicks = 0;
+	color = 255;
 	if (!capture.isOpened())
 		return ;
 
@@ -194,8 +288,8 @@ void Calibrator::callibrate()
 
 	roi.resize(frame.rows, vector<int>(3));
 	initiateRoi();	
-	setOriCorners(oriCorners);
-	setDist();
+	//setOriCorners(oriCorners);
+	//
 	
 	//vector<vector<int>> whitePointCordiantes = whiteLineDetect.getWhitePointCordinates();
 
@@ -211,17 +305,18 @@ void Calibrator::callibrate()
 		
 		//////////////// RoI
 		drawLines(&frame);
+		
+		drawCircles(&frame);
+
 		int mouseParam=5;
 		cvSetMouseCallback("Original", Calibrator::mouseHandler,&mouseParam);
 		
 		if(rightClicked)
 		{
-			this->whitePointCordinates = whiteLineDetect.identifyWhitePoints(outFrame, frame, blobMatrix, roi);
-			//this->whitePointCordinates = whiteLineDetect.getWhitePointCordinates();
+			//this->whitePointCordinates = whiteLineDetect.identifyWhitePoints(outFrame, frame, blobMatrix, roi);			
 		}
 
-		cv::imshow("Original",frame);
-		//emit showQImage(Mat2QImage(frame));
+		cv::imshow("Original",frame);		
 		
 		cv::waitKey(delay);
 	}
@@ -299,4 +394,10 @@ void Calibrator::calculateMappingDistances(){
 		}*/
 	}
 
+}
+
+void Calibrator::drawCircles(Mat *toDraw){
+	for(int i=0; i<oriCorners.size();i++){
+		circle(*toDraw, Point( oriCorners[i].x, oriCorners[i].y), 10,  Scalar(color,255,255), 5, 8, 0 );
+	}
 }

@@ -1,14 +1,23 @@
-#include "Praveksha.h"
+#include "WhiteLineDetector.h"
 
 using namespace cv;
 using namespace std;
 using namespace gpu;
 
+
+/*
+this fuction returns the output of this class which is the coordinates of white points
+*/
 vector<vector<int>> WhiteLineDetector::getWhitePointCordinates()
 {
 	return whitePointCordiantes;
 }
 
+
+/*
+main function of the white line detecting process
+this identify white points and group them into blobs using other following functions
+*/
 vector<vector<int>> WhiteLineDetector::identifyWhitePoints(cv::Mat &frame, cv::Mat &oriFrame, vector< vector<int> > &matrix, vector<vector <int>> roi)
 {
 	THRESHOULD_BLOB_VALUE = VariableStorage::THRESHOULD_BLOB_VALUE;
@@ -115,6 +124,9 @@ vector< vector<int> > WhiteLineDetector::whitePointesExpandBlobMatrix(cv::Mat &f
 	return whiteBlobsCentroidAndDrawCircle(oriFrame,frame, matrix, blobLablesUsed, roi);
 }
 
+/*
+recursive function to group white points to blobs using four neighbour connectivity
+*/
 void WhiteLineDetector::whitePointesRecursiveFourNeighbour(Mat &frame, int row, int col, int blobLable, vector< vector<int> > &matrix){
 	uchar* pF;
 
@@ -146,10 +158,10 @@ void WhiteLineDetector::whitePointesRecursiveFourNeighbour(Mat &frame, int row, 
 	}
 }
 
-
+/*
+calculate area and centroid of the white point blobs. blobs will be considered as as cirlces
+*/
 vector< vector<int> > WhiteLineDetector::whiteBlobsCentroidAndDrawCircle(cv::Mat &oriFrame,cv::Mat &whiteFrame, vector< vector<int> > &matrix, vector<int> &blobLablesUsed, vector<vector <int>> roi){
-
-	//////////////////// identify centroids and draw circles
 
 	int tempCount = 0;
 
@@ -177,17 +189,9 @@ vector< vector<int> > WhiteLineDetector::whiteBlobsCentroidAndDrawCircle(cv::Mat
 				}
 			}
 		}
-	}
+	}	
 
-
-	int fontface = cv::FONT_HERSHEY_SIMPLEX;
-	double scale = 0.5;
-	int thickness = 3;
-	int baseline = 0;
 	int radius = 0;
-	string s;
-	stringstream ss;
-	int temp = 0;
 	int thresh = 100;
 
 	int MAX_CIRCLE_THRESHOLD = 0;
@@ -220,45 +224,22 @@ vector< vector<int> > WhiteLineDetector::whiteBlobsCentroidAndDrawCircle(cv::Mat
 			CIRCLE_THRESHOULD = thresh;
 
 		if((blobs[k][1]>0.3*oriFrame.rows)&&(blobs[k][3] > CIRCLE_THRESHOULD)&&(blobs[k][3] < MAX_CIRCLE_THRESHOLD)){
-			/*rowCentroidValue = blobs[k][1] / blobs[k][3];
-			colCentroidValue = blobs[k][2] / blobs[k][3];
-			blobs[k][1] = rowCentroidValue;
-			blobs[k][2] = colCentroidValue;*/
+			
 			blobs[k][6] = 1;
 			radius = sqrt(blobs[k][3] / 2.00);
-
-			circle( whiteFrame, Point( blobs[k][2], blobs[k][1]), radius,  Scalar(255), 2, 8, 0 );
-
-
-			temp = blobs[k][0];
-			ss << temp;
-			s = ss.str();
-
-			if(temp<10){
-				s=s.substr(s.length()-1,1);
-			}else if(temp<100)
-				s=s.substr(s.length()-2,2);
-			else
-				s=s.substr(s.length()-3,3);
-			cv::Size text = cv::getTextSize(s, fontface, scale*(radius/20), thickness, &baseline);
-			cv::Point pt(colCentroidValue, rowCentroidValue - radius);
-
-			cv::rectangle(
-				oriFrame, 
-				pt + cv::Point(0, baseline), 
-				pt + cv::Point(text.width, -text.height), 
-				CV_RGB(255,0,0), CV_FILLED
-				);
-
-			cv::putText(whiteFrame, s, pt, fontface, scale*(2), CV_RGB(0,0,0), thickness, 8);
 		}
 	}
+
 
 
 	return blobs;
 }
 
 
+/*
+calculate gradient between two given points. 
+Input points should be give by row and col
+*/
 double WhiteLineDetector::getGradient(int row1, int col1, int row2, int col2){
 	double rowDiff = row1-row2;
 	double colDiff = col1-col2;
@@ -270,6 +251,9 @@ double WhiteLineDetector::getGradient(int row1, int col1, int row2, int col2){
 	}
 }
 
+/*
+this will check whether three given points are colinear. point coordinates should be given in rows and cols
+*/
 bool WhiteLineDetector::isColinear(int firstBlobNo, int secondBlobNo, int thridBlobNo, int row, int col, int row1, int col1, int row2, int col2){
 	double COLINEAR_THRESHOLD = 0.05;
 
@@ -283,6 +267,11 @@ bool WhiteLineDetector::isColinear(int firstBlobNo, int secondBlobNo, int thridB
 		return false;
 }
 
+/*
+calculate average gradient between three given points.
+fist calulte gradient between first two points and then calculate average between second and third points
+finally get the average between ablove two values
+*/
 double WhiteLineDetector::averageGradient(int firstBlobNo, int secondBlobNo, int thridBlobNo, int row, int col, int row1, int col1, int row2, int col2){
 	double gradient1 = getGradient(row, col, row1, col1);
 	double gradient2 = getGradient(row, col, row2, col2);
@@ -290,18 +279,19 @@ double WhiteLineDetector::averageGradient(int firstBlobNo, int secondBlobNo, int
 	return average;
 }
 
+
 vector<vector <int>> WhiteLineDetector::removeSmallBlobs(vector<vector <int>> &blobs){
-	vector<vector <int>> blobsBefore = blobs;
-	for(int i=0;i<blobsBefore.size();i++){
+	vector<vector <int>> blobsToReturn = blobs;
+	for(int i=0;i<blobsToReturn.size();i++){
 
-		if(blobsBefore[i][6]==0){
+		if(blobsToReturn[i][6]==0){
 
-			blobsBefore.erase(blobsBefore.begin()+i);
+			blobsToReturn.erase(blobsToReturn.begin()+i);
 			i=i-1;
 		}
 	}
 
-	return blobsBefore;
+	return blobsToReturn;
 }
 
 

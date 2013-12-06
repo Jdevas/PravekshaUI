@@ -1,11 +1,9 @@
+#include "VehicleIdentifier.h"
 #include "Praveksha.h"
 
 using namespace cv;
 using namespace std;
 using namespace gpu;
-
-int blobRowCount;
-int blobColCount;
 
 vector< vector<int> > VehicleIdentifier::expandBlobMatrix(cv::Mat &frame, cv::Mat &oriFrame, vector< vector<int> > &matrix, vector<vector <int>> &roi)
 {
@@ -55,17 +53,7 @@ vector< vector<int> > VehicleIdentifier::expandBlobMatrix(cv::Mat &frame, cv::Ma
 				}
 
 				//expand using recursion
-				blobRowCount  = 0;
-				blobColCount = 0;
 				recursiveFourNeighbour(frame, row, col, blobLable, matrix);
-
-				if(blobRowCount > 300 ){
-					if((blobColCount/blobRowCount) < 90){
-						vector< vector<int> > returnNull(1, vector<int>(1));
-						returnNull[0][0] = 1001;
-						return returnNull;
-					}
-				}
 
 				blobLable = blobTemp;
 
@@ -99,21 +87,12 @@ void VehicleIdentifier::recursiveFourNeighbour(Mat &frame, int row, int col, int
 	}
 
 	if( col < frame.cols-1 && pF[col+1] < THRESHOULD_BLOB_VALUE && matrix[row][col+1] == 0){ // next column
-		
-		blobColCount++;
-
 		matrix[row][col+1] = blobLable;
 		recursiveFourNeighbour(frame, row, col+1, blobLable, matrix);
 	}if( row < frame.rows-1 && pFN[col] < THRESHOULD_BLOB_VALUE && matrix[row+1][col] == 0){ // below row
-
-		blobRowCount++;
-
 		matrix[row+1][col] = blobLable;
 		recursiveFourNeighbour(frame, row+1, col, blobLable, matrix);
 	}if( col > 1 && pF[col-1] < THRESHOULD_BLOB_VALUE && matrix[row][col-1] == 0){ // previous col
-
-		blobColCount++;
-
 		matrix[row][col-1] = blobLable;
 		recursiveFourNeighbour(frame, row, col-1, blobLable, matrix);
 	}
@@ -126,7 +105,7 @@ vector< vector<int> > VehicleIdentifier::identifyCentroidAndDrawCircle(cv::Mat &
 
 	int tempCount = 0;
 
-	vector< vector<int> > blobs(blobLablesUsed.size(), vector<int>(15));
+	vector< vector<int> > blobs(blobLablesUsed.size(), vector<int>(17));
 	int rowCentroidValue = 0;
 	int colCentroidValue = 0;
 	int elementCount = 0;

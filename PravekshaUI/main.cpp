@@ -1,17 +1,19 @@
 #include "pravekshaui.h"
 #include <QtGui/QApplication>
+#include "qcustomplot.h"
 
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	SpeedDetector spd;
-
+	Logger logger; 
+	VariableStorage::distance=0;
 	PravekshaUI w;
-	w.praveksha = PravekshaHandler(&spd);
+	w.praveksha = PravekshaHandler(&logger);
 
-	QObject::connect(&spd, SIGNAL(violationDetected(double)),&w,SLOT(updateLogList(double)));
-	//QObject::connect(&w, SIGNAL(itemClicked(QListWidgetItem*)), &w, SLOT(onListItemClicked(QListWidgetItem*)));
+	QObject::connect(&logger, SIGNAL(violationDetected(String)),&w,SLOT(updateLogList(String)));      //connect logger with qt interface
+	
+	w.move(675,100);
 	w.show();
 	return a.exec();
 }
